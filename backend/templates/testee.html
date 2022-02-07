@@ -24,24 +24,7 @@ function hanzi_to_mc_upd() {
         document.getElementById("mc-alter").innerHTML = "您输入的不是 Hanzi";
         return;
     } else {
-        var db = openDatabase("mcpdict.db","1.0","test db",20902*13);
-        unicode += x.charCodeAt(0).toString(16);
-        res = unicode;
-        db.transaction(function(tx){
-            tx.executeSql("SELECT * FROM mcpdict WHERE unicode = 4E00", [], function (tx, results) {
-                var len = results.rows.length, i;
-                for (i = 0; i < len; i++){
-                    res = results.rows.item(i);
-                }
-                console.log('query founr: ' + results)
-                res = results;
-            },
-                (tx, error) => {
-                    console.log('query failed: ' + error.message)
-                });
-        })
-        document.getElementById("mc-alter").innerHTML = res;
-        return;
+        window.location.href = "../testee?han=" + x;
     }
 }
 </script>

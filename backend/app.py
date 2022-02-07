@@ -8,7 +8,11 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return '問天地好在。'
+    return '問天地好在。' + '''
+    <form action="/testee">
+    <input type="submit" value="Go to Testee" />
+    </form>
+    '''
 
 
 # def get_db():
