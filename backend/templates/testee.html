@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+Hello World vonm testeten Seite
+
+<br/>
+
+<input id="hanzi" type="text">
+
+<script>
+function isChinese(s){
+	return /[\u4e00-\u9fa5]/.test(s);
+}
+function hanzi_to_mc_upd() {
+    var x = document.getElementById("hanzi").value;
+    var unicode = '';
+    var res = 'habe nichts ge';
+    if(!isChinese(x)) {
+        document.getElementById("mc-alter").innerHTML = "您输入的不是 Hanzi";
+        return;
+    } else {
+        var db = openDatabase("mcpdict.db","1.0","test db",20902*13);
+        unicode += x.charCodeAt(0).toString(16);
+        res = unicode;
+        db.transaction(function(tx){
+            tx.executeSql("SELECT * FROM mcpdict WHERE unicode = 4E00", [], function (tx, results) {
+                var len = results.rows.length, i;
+                for (i = 0; i < len; i++){
+                    res = results.rows.item(i);
+                }
+                console.log('query founr: ' + results)
+                res = results;
+            },
+                (tx, error) => {
+                    console.log('query failed: ' + error.message)
+                });
+        })
+        document.getElementById("mc-alter").innerHTML = res;
+        return;
+    }
+}
+</script>
+
+<br></br>
+
+<button type="button" onclick="hanzi_to_mc_upd()">Hanzi to MC-Alter</button>
+
+<p id="mc-alter"></p>
+
+<!--<p> <a href="http://47.107.247.99:5088/?name=%E4%B8%80"  target="_blank">点击查询「一」的声韵及拟音</a> </p>-->
+
+<hr>
+
+</body>
+</html>
