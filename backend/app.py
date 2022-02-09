@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request
+from flask_cors import CORS
 import sqlite3
 
 app = Flask(__name__)
+CORS(app)
 
 # DATABASE = './mcpdict.db'
 
@@ -43,6 +45,22 @@ def testee():
     # values = cursor.fetchall()
     # print(values)
     return render_template('testee.html') + str(cursor.fetchall()[0])
+
+
+@app.route('/han_search', methods=['POST'])
+def han_search():
+    print(request.get_json())
+    han = request.get_json().copy().get('query', '文')
+    # print(request.get_json())
+    unicode_str = han.encode('unicode_escape')
+    unicode_str = str(unicode_str)  # like (incl. "b'\\" etc.): b'\\u4e00'
+    unicode_str = unicode_str[5:-1].upper()
+    conn = sqlite3.connect('backend/data/mcpdict.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM mcpdict WHERE unicode = ?', (unicode_str,))
+    hans = cursor.fetchall()[0]
+    output = {'hans': hans}
+    return output
 
 
 if __name__ == '__main__':
