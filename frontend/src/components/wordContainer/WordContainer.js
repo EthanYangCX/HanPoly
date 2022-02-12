@@ -1,5 +1,17 @@
 import React from 'react'
 
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
+function createData(name, value) {
+  return { name, value };
+}
+
 export default class WordContainer extends React.Component {
   constructor(props) {
           super(props)
@@ -14,23 +26,45 @@ export default class WordContainer extends React.Component {
   render() {
       const { data } = this.state
       let data0 = data
+      const rows = [
+          createData('unicode', data0[0]),
+          createData('mc', data0[1]),
+          createData('pu', data0[2]),
+          createData('ct', data0[3]),
+          createData('sh', data0[4]),
+          createData('mn', data0[5]),
+          createData('kr', data0[6]),
+          createData('vn', data0[7]),
+          createData('jp-go', data0[8]),
+          createData('jp-kan', data0[9]),
+          createData('jp-tou', data0[10]),
+          createData('jp-kwan', data0[11]),
+          createData('jp-othern', data0[12]),
+];
       return (
-      <div>
-          <br/> unicode {data0[0]}
-          <br/> mc {data0[1]}
-          <br/> pu {data0[2]}
-          <br/> ct {data0[3]}
-          <br/> sh {data0[4]}
-          <br/> mn {data0[5]}
-          <br/> kr {data0[6]}
-          <br/> vn {data0[7]}
-          <br/> jp-go {data0[8]}
-          <br/> jp-kan {data0[9]}
-          <br/> jp-tou {data0[10]}
-          <br/> jp-kwan {data0[11]}
-          <br/> jp-other {data0[12]}
-      </div>
-
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Type</TableCell>
+            <TableCell align="right">Pronunciation</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow
+              key={row.name}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                {row.name}
+              </TableCell>
+              <TableCell align="right">{row.value}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
       )
   }
 }
