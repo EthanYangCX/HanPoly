@@ -31,27 +31,20 @@ def testee():
     han = request.args.get('han')
     if han is None:
         han = '文'
-    unicode_str = han.encode('unicode_escape')
-    unicode_str = str(unicode_str)  # like (incl. "b'\\" etc.): b'\\u4e00'
-    unicode_str = unicode_str[5:-1].upper()
-    conn = sqlite3.connect('backend/data/mcpdict.db')
-    cursor = conn.cursor()
-    # cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-    cursor.execute('SELECT * FROM mcpdict WHERE unicode = ?', (unicode_str,))
-    # for row in cursor:
-    #     print(row[1])
-    # print(cursor.fetchall())
-    # cursor.execute('SELECT * FROM mcpdict WHERE unicode = ?', '4E00')
-    # values = cursor.fetchall()
-    # print(values)
-    return render_template('testee.html') + str(cursor.fetchall()[0])
+    hans = search_in_db(han)
+    return render_template('testee.html') + hans
 
 
 @app.route('/han_search', methods=['POST'])
 def han_search():
     print(request.get_json())
     han = request.get_json().copy().get('query', '文')
-    # print(request.get_json())
+    hans = search_in_db(han)
+    output = {'hans': hans}
+    return output
+
+
+def search_in_db(han):
     unicode_str = han.encode('unicode_escape')
     unicode_str = str(unicode_str)  # like (incl. "b'\\" etc.): b'\\u4e00'
     unicode_str = unicode_str[5:-1].upper()
@@ -59,8 +52,7 @@ def han_search():
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM mcpdict WHERE unicode = ?', (unicode_str,))
     hans = cursor.fetchall()[0]
-    output = {'hans': hans}
-    return output
+    return hans
 
 
 if __name__ == '__main__':

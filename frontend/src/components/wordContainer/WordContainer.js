@@ -47,7 +47,7 @@ export default class WordContainer extends React.Component {
         <TableHead>
           <TableRow>
             <TableCell>Type</TableCell>
-            <TableCell align="right">Pronunciation</TableCell>
+            <TableCell align="left">Pronunciation</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -59,7 +59,7 @@ export default class WordContainer extends React.Component {
               <TableCell component="th" scope="row">
                 {row.name}
               </TableCell>
-              <TableCell align="right">{row.value}</TableCell>
+              <TableCell align="left">{row.value}</TableCell>
             </TableRow>
           ))}
         </TableBody>
